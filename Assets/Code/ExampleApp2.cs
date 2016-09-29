@@ -28,10 +28,6 @@ namespace COPUnity
             // example: binding a singleton service component
             injectionBinder.Bind<IPathfinder>().To<Pathfinder>().ToSingleton();
 
-            // example: binding to a value / object
-            var exampleCamera = GameObject.FindObjectOfType<ExampleCamera>();
-            injectionBinder.Bind<ICamera>().ToValue(exampleCamera);
-
             // example: binding concrete implementations over an enum
             WeaponBindings.Bind(injectionBinder);
         }
@@ -45,6 +41,9 @@ namespace COPUnity
 
             var respawn = GameObject.FindGameObjectWithTag("Respawn");
  
+            var camera = MonoBehaviour.Instantiate(Resources.Load("Camera", typeof(GameObject)),
+                respawn.transform.position, respawn.transform.rotation) as GameObject;   
+
             var character = MonoBehaviour.Instantiate(Resources.Load("Character", typeof(GameObject)),
                 respawn.transform.position, respawn.transform.rotation) as GameObject;          
         }

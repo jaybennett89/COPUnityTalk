@@ -1,33 +1,56 @@
 ﻿using UnityEngine;
 using System.Collections;
+using strange.extensions.dispatcher.eventdispatcher.api;
+using strange.extensions.context.api;
+using System;
 
-public class ExampleCamera : MonoBehaviour, ICamera 
+namespace COPUnity
 {
-    public Transform pivot;
-    public Camera camera;
-    public Transform target;
-    public float interp = 1.0f;
- 
-    public void SetTarget(Transform target)
+    public enum CameraEvent
     {
-        this.target = target;
+        SET_TARGET,
     }
-   
-    void Awake()
+    
+    public class ExampleCamera : MonoView 
     {
-        camera = this.GetComponent<Camera>();
-    }
+        [Inject(ContextKeys.CONTEXT_DISPATCHER)]
+        public IEventDispatcher eventBus { get; set; }
 
-    void Update()
-    {
-        if(target)
+        public Transform pivot;
+        public Camera camera;
+        public Transform target;
+        public float interp = 1.0f;
+     
+        public void SetTarget(Transform target)
         {
-            pivot.transform.position = Vector3.Lerp(pivot.transform.position, target.transform.position, interp * Time.deltaTime);
+            this.target = target;
+        }
+       
+        protected override void OnAwake()
+        {
+            camera = this.GetComponent<Camera>();
+
+            eventBus.AddListener(CameraEvent.SET_TARGET, OnSetTarget);
+        }
+    
+        void Update()
+        {
+            if(target)
+            {
+                pivot.transform.position = Vector3.Lerp(pivot.transform.position, target.transform.position, interp * Time.deltaTime);
+            }
+        }
+
+        void OnSetTarget(IEvent evt)
+        {
+            var t = (Transform)evt.data;
+            if(t == null)
+            {
+                // can consider both throwing an exception as a strong assertion or simply returning
+                throw new NullReferenceException();
+            }
+
+            this.target = t;
         }
     }
-}
-
-public interface ICamera
-{
-    void SetTarget(Transform target);
 }

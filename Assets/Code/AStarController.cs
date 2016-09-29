@@ -2,6 +2,8 @@
 using System.Collections;
 using Pathfinding;
 using System.Collections.Generic;
+using strange.extensions.dispatcher.eventdispatcher.api;
+using strange.extensions.context.api;
 
 namespace COPUnity
 {
@@ -14,8 +16,8 @@ namespace COPUnity
         [Inject]
         public IPathfinder pathfinder { get; set; }
 
-        [Inject]
-        public ICamera camera { get; set; }
+        [Inject(ContextKeys.CONTEXT_DISPATCHER)]
+        public IEventDispatcher eventBus { get; set; }
 
         // internal path from pathfinder
         List<Vector3> path;
@@ -34,7 +36,7 @@ namespace COPUnity
             controller = this.GetComponent<CharacterController>();
             seeker = this.GetComponent<Seeker>();
 
-            camera.SetTarget(this.transform);
+            eventBus.Dispatch(CameraEvent.SET_TARGET, this.transform);
         }
 
         void Update()

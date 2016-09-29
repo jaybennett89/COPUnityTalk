@@ -64,6 +64,11 @@ namespace COPUnity
     {
         public static void Bind(IInjectionBinder injectionBinder)
         {
+            injectionBinder.Bind<IWeapon>().To<HockeyStick>().ToName(WeaponId.HockeyStick);
+            injectionBinder.Bind<IWeapon>().To<Crowbar>().ToName(WeaponId.Crowbar);
+            injectionBinder.Bind<IWeapon>().To<HuntersKnife>().ToName(WeaponId.HuntersKnife);
+
+            /* the smart way with reflection
             var type = typeof(IWeapon);
             var weaponTypes = Assembly.GetAssembly(typeof(IWeapon)).GetTypes()
                 .Where(p => type.IsAssignableFrom(p) && p.BaseType == typeof(Weapon) && !p.IsAbstract);
@@ -72,7 +77,7 @@ namespace COPUnity
             {
                 var id = Enum.Parse(typeof(WeaponId), t.Name);
                 injectionBinder.Bind<IWeapon>().To(t).ToName(id);
-            }
+            }*/
         }
     }
 }
