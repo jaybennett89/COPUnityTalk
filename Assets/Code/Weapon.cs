@@ -64,20 +64,15 @@ namespace COPUnity
     {
         public static void Bind(IInjectionBinder injectionBinder)
         {
-            Debug.Log("Binding IWeapon Implementations");
-
-            /*
             var type = typeof(IWeapon);
-            var weaponTypes = Assembly.GetAssembly(typeof(IWeapon)).GetTypes().
-                .Where(p => type.IsAssignableFrom(p) && type.IsClass && !type.IsAbstract);
+            var weaponTypes = Assembly.GetAssembly(typeof(IWeapon)).GetTypes()
+                .Where(p => type.IsAssignableFrom(p) && p.BaseType == typeof(Weapon) && !p.IsAbstract);
 
-            foreach(var w in weaponTypes)
+            foreach(var t in weaponTypes)
             {
-                var id = Enum.Parse(typeof(WeaponId), w.Name);
-
-                Debug.Log("bind " + w.Name + " to " + id.ToString());
-                injectionBinder.Bind<IWeapon>().To(w).ToName(id);
-            }  */
+                var id = Enum.Parse(typeof(WeaponId), t.Name);
+                injectionBinder.Bind<IWeapon>().To(t).ToName(id);
+            }
         }
     }
 }
