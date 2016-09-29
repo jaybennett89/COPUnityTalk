@@ -22,7 +22,7 @@ namespace COPUnity
         int currentWaypoint = 0;
 
         // settings
-        float movespeed = 5f;
+        float movespeed = 12f;
         float rotationSpeed = 10f;
         float gravity = -10f;
         float maxWaypointDist = 0.2f;
