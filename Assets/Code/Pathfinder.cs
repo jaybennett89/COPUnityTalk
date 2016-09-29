@@ -11,11 +11,19 @@ public class Pathfinder : IPathfinder
 {
     public Vector3 GetNearest(Vector3 targetPos)
     {
-        return AstarPath.active.GetNearest(targetPos, new NNConstraint() { walkable = true}).clampedPosition;
+        if(AstarPath.active)
+        {
+            return AstarPath.active.GetNearest(targetPos, new NNConstraint() { walkable = true}).clampedPosition;
+        }
+
+        return targetPos;
     }
 
     public void ScanMap()
     {
-        AstarPath.active.Scan ();
+        if(AstarPath.active)
+        {
+            AstarPath.active.Scan ();
+        }
     }
 }
