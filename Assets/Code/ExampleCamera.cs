@@ -50,6 +50,7 @@ namespace COPUnity
                 throw new NullReferenceException();
             }
 
+            Debug.Log("Camera Set Target: " + t.gameObject.name);
             this.target = t;
         }
     }

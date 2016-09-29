@@ -27,7 +27,7 @@ namespace COPUnity
         public float BaseDamage { get; protected set; }
         public float AttacksPerSec { get; protected set; }
         public float Range { get; protected set; }
-        public string Description { get { return string.Format("dmg: {0} aps: {1} rng: {2}", BaseDamage, AttacksPerSec, Range); }}
+        public string Description { get { return string.Format("Damage: {0} AttacksPerSec: {1} Range: {2}", BaseDamage, AttacksPerSec, Range); }}
     }
 
     public class HockeyStick : Weapon 

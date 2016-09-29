@@ -16,6 +16,9 @@ namespace COPUnity
         [Inject]
         public IPathfinder pathfinder { get; set; }
 
+        [Inject(WeaponId.HockeyStick)]
+        public IWeapon weapon { get; set; }
+
         [Inject(ContextKeys.CONTEXT_DISPATCHER)]
         public IEventDispatcher eventBus { get; set; }
 
@@ -31,7 +34,7 @@ namespace COPUnity
 
         protected override void OnAwake()
         {
-            Debug.Log("AStarController.Awake()");
+            Debug.Log("Weapon " + weapon.Description);
 
             controller = this.GetComponent<CharacterController>();
             seeker = this.GetComponent<Seeker>();
@@ -44,8 +47,6 @@ namespace COPUnity
             // input
             if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
             {
-                Debug.Log("AStarController.MouseDown");
-
                 Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
                 RaycastHit hit;
     
@@ -58,8 +59,6 @@ namespace COPUnity
                     var nearestWalkablePos = pathfinder.GetNearest(hit.point);
 
                     seeker.StartPath(this.transform.position, nearestWalkablePos, onPathCalculated);
-
-                    Debug.Log(string.Format("AStarController.MoveTo(target={0}, nearest={1})", hit.point, nearestWalkablePos));
                 }
             }
 
